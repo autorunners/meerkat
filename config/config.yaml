@@ -1,0 +1,73 @@
+global:
+  name: demo testing
+  host: http://127.0.0.1:8080
+  verify: false
+
+teststeps:
+  - name: get-json
+    request:
+      cookies:
+        cookie1: '你好'
+        cookie2: hello
+      headers:
+        accept: '*/*'
+        accept-encoding: gzip, deflate, br
+        accept-language: zh-cn
+        user-agent: 'MeerKat v0.01
+              Darwin/19.6.0'
+        header1: meerkat
+        header2: 'meerkat2'
+      method: GET
+      uri: /json
+    validate:
+    -eq:
+      - status_code
+      - 200
+
+  - name: get-normal
+    request:
+      cookies:
+        cookie1: '你好'
+        cookie2: hello
+      headers:
+        accept: '*/*'
+        accept-encoding: gzip, deflate, br
+        accept-language: zh-cn
+        user-agent: 'MeerKat v0.01
+                    Darwin/19.6.0'
+        header1: meerkat
+        header2: 'meerkat2'
+      method: GET
+      params:
+        ts: '0'
+      uri: /normal
+    validate:
+    - eq:
+      - status_code
+      - 200
+
+  - name: get-normal-string
+    request:
+      cookies:
+        cookie1: '你好'
+        cookie2: hello
+      headers:
+        accept: '*/*'
+        accept-encoding: gzip, deflate, br
+        accept-language: zh-cn
+        user-agent: 'MeerKat v0.01
+                    Darwin/19.6.0'
+        header1: meerkat
+        header2: 'meerkat2'
+      method: GET
+      params:
+        ts: '0'
+      uri: /normal/string
+    validate:
+    - eq:
+      - status_code
+      - 200
+
+
+
+
