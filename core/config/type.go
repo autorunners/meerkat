@@ -3,7 +3,7 @@ package config
 type (
 	Config struct {
 		Global Global `yaml:"global"`
-		Suite  Suite  `yaml:"suite"`
+		Suites Suites `yaml:"suites"`
 	}
 
 	Global struct {
@@ -13,10 +13,10 @@ type (
 		Validates Validates `yaml:"validates"`
 	}
 
-	Suite []Scene
-	Scene struct {
+	Suites []Suite
+	Suite  struct {
 		Name  string `yaml:"name"`
-		Steps []Step `yaml:"name"`
+		Steps []Step `yaml:"steps"`
 	}
 	Step struct {
 		Name      string    `yaml:"name"`
@@ -33,7 +33,7 @@ type (
 	Cookie  map[string]string
 	Headers map[string]string
 	Request struct {
-		Cookie  Cookie  `yaml:"cookie"`
+		Cookies Cookie  `yaml:"cookies"`
 		Headers Headers `yaml:"headers"`
 		Method  string  `yaml:"method"`
 		Uri     string  `yaml:"uri"`

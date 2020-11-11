@@ -9,7 +9,7 @@ import (
 )
 
 func readYaml() (config.Config, error) {
-	data, err := ioutil.ReadFile("../../config/config.yaml")
+	data, err := ioutil.ReadFile("./config/config.yaml")
 	if err != nil {
 		log.Panic(err)
 	}
@@ -22,18 +22,18 @@ func readYaml() (config.Config, error) {
 
 	// just for debug
 	log.Println(obj)
-	suite := obj.Suite
+	suites := obj.Suites
 
 	// 把global中的配置合并到suites中
-	for _, scene := range suite {
-		log.Printf("scene name %s begin working", scene.Name)
-		for _, step := range scene.Steps {
+	for _, suite := range suites {
+		log.Printf("scene name %s begin working", suite.Name)
+		for _, step := range suite.Steps {
 			log.Printf("step name %s begin", step.Name)
 			req := step.Request
 			headers := req.Headers
 			method := req.Method
 			uri := req.Uri
-			cookie := req.Cookie
+			cookie := req.Cookies
 			log.Println(uri, method, headers, cookie)
 		}
 	}

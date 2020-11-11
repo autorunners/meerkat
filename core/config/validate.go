@@ -14,3 +14,7 @@ func (validates Validates) Check(resp *http.Response, t string) error {
 	}
 	return nil
 }
+
+func jsonCheck() {
+
+}

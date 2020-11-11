@@ -9,12 +9,12 @@ import (
 
 func Handler(ctx context.Context, conf config.Config) error {
 
-	suite := conf.Suite
+	suites := conf.Suites
 	global := conf.Global
 	gReq := global.Request
-	for _, scene := range suite {
-		log.Printf("scene name %s begin working", scene.Name)
-		for _, step := range scene.Steps {
+	for _, suite := range suites {
+		log.Printf("scene name %s begin working", suite.Name)
+		for _, step := range suite.Steps {
 			log.Println(step)
 			req := step.Request
 			name := step.Name
@@ -30,9 +30,9 @@ func Handler(ctx context.Context, conf config.Config) error {
 					req.Headers[hk] = hv
 				}
 			}
-			for ck, cv := range gReq.Cookie {
-				if req.Cookie[ck] == "" {
-					req.Cookie[ck] = cv
+			for ck, cv := range gReq.Cookies {
+				if req.Cookies[ck] == "" {
+					req.Cookies[ck] = cv
 				}
 			}
 

@@ -15,7 +15,7 @@ func (req Request) Handle() (*http.Response, error) {
 	for key, value := range req.Headers {
 		request.Header.Add(key, value)
 	}
-	for key, value := range req.Cookie {
+	for key, value := range req.Cookies {
 		cookie := &http.Cookie{
 			Name:  key,
 			Value: value,

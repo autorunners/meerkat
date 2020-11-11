@@ -16,14 +16,78 @@ global:
     method: GET
     timeout: 50   # 单位:ms
   validates:
-  -eq:
+  - eq:
     - status_code
     - 200
 
-suite:
-- scene:
-    name: scene1
-    steps:
+suites:
+- name: scene1
+  steps:
+  - name: step-get-json
+    request:
+      cookies:
+        cookie1: '你好'
+        cookie2: hello
+      headers:
+        accept: '*/*'
+        accept-encoding: gzip, deflate, br
+        accept-language: zh-cn
+        user-agent: 'MeerKat v0.01
+              Darwin/19.6.0'
+        header1: meerkat
+        header2: 'meerkat2'
+      method: GET
+      uri: /json
+    validates:
+      - eq:
+        - status_code
+        - 200
+    response:
+      name: response
+      type: json
+      values:
+        - key1
+        - key2.key21
+  - name: step-get-normal
+    request:
+      cookies:
+        cookie1: '你好'
+        cookie2: hello
+      headers:
+        accept: '*/*'
+      method: GET
+      params:
+        ts: '0'
+      uri: /normal
+    validate:
+      - eq:
+        - status_code
+        - 200
+
+  - name: step-get-normal-string
+    request:
+      cookies:
+        cookie1: '你好'
+        cookie2: hello
+      headers:
+        accept: '*/*'
+        accept-encoding: gzip, deflate, br
+        accept-language: zh-cn
+        user-agent: 'MeerKat v0.01
+                    Darwin/19.6.0'
+        header1: meerkat
+        header2: 'meerkat2'
+      method: GET
+      params:
+        ts: '0'
+      uri: /normal/string
+    validates:
+    - eq:
+      - status_code
+      - 200
+
+- name: scene2
+  steps:
     - name: step-get-json
       request:
         cookies:
@@ -34,13 +98,13 @@ suite:
           accept-encoding: gzip, deflate, br
           accept-language: zh-cn
           user-agent: 'MeerKat v0.01
-                Darwin/19.6.0'
+              Darwin/19.6.0'
           header1: meerkat
           header2: 'meerkat2'
         method: GET
         uri: /json
       validates:
-      -eq:
+      - eq:
         - status_code
         - 200
       response:
@@ -49,73 +113,4 @@ suite:
         values:
           - key1
           - key2.key21
-
-
-    - name: step-get-normal
-      request:
-        cookies:
-          cookie1: '你好'
-          cookie2: hello
-        headers:
-          accept: '*/*'
-        method: GET
-        params:
-          ts: '0'
-        uri: /normal
-      validate:
-      - eq:
-        - status_code
-        - 200
-
-    - name: step-get-normal-string
-      request:
-        cookies:
-          cookie1: '你好'
-          cookie2: hello
-        headers:
-          accept: '*/*'
-          accept-encoding: gzip, deflate, br
-          accept-language: zh-cn
-          user-agent: 'MeerKat v0.01
-                      Darwin/19.6.0'
-          header1: meerkat
-          header2: 'meerkat2'
-        method: GET
-        params:
-          ts: '0'
-        uri: /normal/string
-      validates:
-      - eq:
-        - status_code
-        - 200
-
-
-- scene:
-    name: scene2
-    steps:
-      - name: step-get-json
-        request:
-          cookies:
-            cookie1: '你好'
-            cookie2: hello
-          headers:
-            accept: '*/*'
-            accept-encoding: gzip, deflate, br
-            accept-language: zh-cn
-            user-agent: 'MeerKat v0.01
-                Darwin/19.6.0'
-            header1: meerkat
-            header2: 'meerkat2'
-          method: GET
-          uri: /json
-        validates:
-        -eq:
-          - status_code
-          - 200
-        response:
-          name: response
-          type: json
-          values:
-            - key1
-            - key2.key21
 
