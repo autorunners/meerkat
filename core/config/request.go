@@ -8,7 +8,7 @@ import (
 
 func (req Request) Handle() (*http.Response, error) {
 	log.Println(req)
-	request, err := http.NewRequest(req.Method, req.FullUri, nil)
+	request, err := http.NewRequest(req.Method, req.Host+req.Uri, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -24,7 +24,7 @@ func (req Request) Handle() (*http.Response, error) {
 	}
 
 	client := &http.Client{
-		Timeout: time.Second, // @todo
+		Timeout: time.Duration(req.Timeout) * time.Millisecond,
 	}
 
 	return client.Do(request)

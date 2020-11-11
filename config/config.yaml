@@ -1,8 +1,8 @@
 global:
   name: demo testing
-  host: http://127.0.0.1:8080
   verify: false
   request:
+    host: http://127.0.0.1:8080
     cookies:
       cookieG: 'Global Cookie'
     headers:

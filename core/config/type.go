@@ -8,7 +8,6 @@ type (
 
 	Global struct {
 		Name      string    `yaml:"name"`
-		Host      string    `yaml:"host"`
 		Verify    bool      `yaml:"verify"`
 		Request   Request   `yaml:"request"`
 		Validates Validates `yaml:"validates"`
@@ -38,7 +37,8 @@ type (
 		Headers Headers `yaml:"headers"`
 		Method  string  `yaml:"method"`
 		Uri     string  `yaml:"uri"`
-		FullUri string  `yaml:"fullUri"` // 带host, 和uri只需要一个
+		Host    string  `yaml:"host"`
+		Timeout int64   `yaml:"timeout"`
 	}
 
 	Response struct {
