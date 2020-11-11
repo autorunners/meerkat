@@ -7,9 +7,11 @@ type (
 	}
 
 	Global struct {
-		Name   string `yaml:"name"`
-		Host   string `yaml:"host"`
-		Verify bool   `yaml:"verify"`
+		Name      string    `yaml:"name"`
+		Host      string    `yaml:"host"`
+		Verify    bool      `yaml:"verify"`
+		Request   Request   `yaml:"request"`
+		Validates Validates `yaml:"validates"`
 	}
 
 	Suite []Scene
@@ -18,10 +20,10 @@ type (
 		Steps []Step `yaml:"name"`
 	}
 	Step struct {
-		Name     string    `yaml:"name"`
-		Request  Request   `yaml:"request"`
-		Validate Validates `yaml:"validate"`
-		Response Response  `yaml:"response"`
+		Name      string    `yaml:"name"`
+		Request   Request   `yaml:"request"`
+		Validates Validates `yaml:"validates"`
+		Response  Response  `yaml:"response"`
 	}
 
 	Validates []Validate

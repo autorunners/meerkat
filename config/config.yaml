@@ -2,6 +2,23 @@ global:
   name: demo testing
   host: http://127.0.0.1:8080
   verify: false
+  request:
+    cookies:
+      cookieG: 'Global Cookie'
+    headers:
+      accept: '*/*'
+      accept-encoding: gzip, deflate, br
+      accept-language: zh-cn
+      user-agent: 'MeerKat v0.01
+                       Darwin/19.6.0'
+      header1: meerkat
+      header2: 'meerkat2'
+    method: GET
+    timeout: 50   # 单位:ms
+  validates:
+  -eq:
+    - status_code
+    - 200
 
 suite:
 - scene:
@@ -22,7 +39,7 @@ suite:
           header2: 'meerkat2'
         method: GET
         uri: /json
-      validate:
+      validates:
       -eq:
         - status_code
         - 200
@@ -41,12 +58,6 @@ suite:
           cookie2: hello
         headers:
           accept: '*/*'
-          accept-encoding: gzip, deflate, br
-          accept-language: zh-cn
-          user-agent: 'MeerKat v0.01
-                      Darwin/19.6.0'
-          header1: meerkat
-          header2: 'meerkat2'
         method: GET
         params:
           ts: '0'
@@ -73,7 +84,7 @@ suite:
         params:
           ts: '0'
         uri: /normal/string
-      validate:
+      validates:
       - eq:
         - status_code
         - 200
@@ -97,7 +108,7 @@ suite:
             header2: 'meerkat2'
           method: GET
           uri: /json
-        validate:
+        validates:
         -eq:
           - status_code
           - 200

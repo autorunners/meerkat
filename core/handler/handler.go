@@ -25,8 +25,8 @@ func Handler(ctx context.Context, conf config.Config) error {
 			if err != nil {
 				return err
 			}
-			validate := step.Validate
-			validate.Check(resp, step.Response.Type)
+			validates := step.Validates
+			validates.Check(resp, step.Response.Type)
 		}
 	}
 

@@ -23,6 +23,8 @@ func readYaml() (config.Config, error) {
 	// just for debug
 	log.Println(obj)
 	suite := obj.Suite
+
+	// 把global中的配置合并到suites中
 	for _, scene := range suite {
 		log.Printf("scene name %s begin working", scene.Name)
 		for _, step := range scene.Steps {
