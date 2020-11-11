@@ -7,25 +7,29 @@ import (
 	"github.com/autorunners/meerkat/core/config"
 )
 
-func Handler(ctx context.Context, conf config.C) error {
+func Handler(ctx context.Context, conf config.Config) error {
 
-	steps := conf.TestSteps
+	suite := conf.Suite
 	global := conf.Global
-	//log.Println(steps, global)
-
-	for _, step := range steps {
-		log.Println(step)
-		req := step.Request
-		name := step.Name
-		log.Printf("[req] %v is begin", name)
-		if req.FullUri == "" {
-			req.FullUri = global.Host + req.Uri
-		}
-		err := req.Handle()
-		if err != nil {
-			return err
+	for _, scene := range suite {
+		log.Printf("scene name %s begin working", scene.Name)
+		for _, step := range scene.Steps {
+			log.Println(step)
+			req := step.Request
+			name := step.Name
+			log.Printf("[req] %v is begin", name)
+			if req.FullUri == "" {
+				req.FullUri = global.Host + req.Uri
+			}
+			resp, err := req.Handle()
+			if err != nil {
+				return err
+			}
+			validate := step.Validate
+			validate.Check(resp, step.Response.Type)
 		}
 	}
+
 	return nil
 
 }

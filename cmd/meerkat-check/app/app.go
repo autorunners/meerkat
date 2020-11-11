@@ -28,14 +28,14 @@ func NewCommand() *cobra.Command {
 func runCommand() error {
 	log.Println("meerkat-check is running...")
 
-	c, err := readYaml()
+	config, err := readYaml()
 	ctx, cancel := context.WithCancel(context.Background())
 	defer func() {
 		log.Println("canceling context")
 		cancel()
 	}()
 
-	go handler.Handler(ctx, c)
+	go handler.Handler(ctx, config)
 
 	ch := make(chan os.Signal, 1)
 	signal.Notify(ch, os.Interrupt, syscall.SIGTERM)
