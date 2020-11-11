@@ -16,7 +16,9 @@ global:
     method: GET
     timeout: 50   # 单位:ms
   validates:
-  - eq:
+  - op:
+    - http    # http: http协议
+    - eq
     - status_code
     - 200
 
@@ -39,9 +41,11 @@ suites:
       method: GET
       uri: /json
     validates:
-      - eq:
-        - status_code
-        - 200
+    - op:
+      - http    # http: http协议
+      - eq
+      - status_code
+      - 200
     response:
       name: response
       type: json
@@ -60,9 +64,11 @@ suites:
         ts: '0'
       uri: /normal
     validate:
-      - eq:
-        - status_code
-        - 200
+    - op:
+      - http    # http: http协议
+      - eq
+      - status_code
+      - 200
 
   - name: step-get-normal-string
     request:
@@ -82,7 +88,9 @@ suites:
         ts: '0'
       uri: /normal/string
     validates:
-    - eq:
+    - op:
+      - http    # http: http协议
+      - eq
       - status_code
       - 200
 
@@ -104,7 +112,14 @@ suites:
         method: GET
         uri: /json
       validates:
-      - eq:
+      - op:
+        - http    # http: http协议
+        - eq
+        - status_code
+        - 200
+      - op:
+        - body   # body: 消息体内容
+        - eq
         - status_code
         - 200
       response:

@@ -27,7 +27,7 @@ type (
 
 	Validates []Validate
 	Validate  struct {
-		Eq []string `yaml:"eq"`
+		Op []string `yaml:"op"`
 	}
 
 	Cookie  map[string]string
