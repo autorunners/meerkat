@@ -16,9 +16,10 @@ type (
 	Suites []Suite
 	Suite  struct {
 		Name  string `yaml:"name"`
-		Steps []Step `yaml:"steps"`
+		Steps Steps  `yaml:"steps"`
 	}
-	Step struct {
+	Steps []Step
+	Step  struct {
 		Name      string    `yaml:"name"`
 		Request   Request   `yaml:"request"`
 		Validates Validates `yaml:"validates"`
@@ -45,5 +46,38 @@ type (
 		Name   string   `yaml:"name"`
 		Type   string   `yaml:"type"`
 		Values []string `yaml:"value"`
+	}
+
+	Result struct {
+		Id           string       `json:"id"`
+		Name         string       `json:"name"`
+		Time         uint64       `json:"time"`
+		Success      bool         `json:"success"`
+		Number       uint16       `json:"number"`
+		SuiteResults SuiteResults `json:"result"`
+	}
+
+	SuiteResults []SuiteResult
+	SuiteResult  struct {
+		Id          string      `json:"id"`
+		Name        string      `json:"name"`
+		Time        uint64      `json:"time"`
+		Success     bool        `json:"success"`
+		StepsResult StepsResult `json:"result"`
+	}
+	StepsResult []StepResult
+	StepResult  struct {
+		Id              string          `json:"id"`
+		Name            string          `json:"name"`
+		Time            uint64          `json:"time"`
+		Success         bool            `json:"success"`
+		Body            []byte          `json:"body"`
+		ValidateResults ValidateResults `json:"result"`
+	}
+	ValidateResults []ValidateResult
+	ValidateResult  struct {
+		Id      string `json:"id"`
+		Success bool   `json:"success"`
+		Detail  string `json:"detail"`
 	}
 )

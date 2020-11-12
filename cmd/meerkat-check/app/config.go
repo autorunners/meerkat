@@ -8,8 +8,8 @@ import (
 	"github.com/autorunners/meerkat/core/config"
 )
 
-func readYaml() (config.Config, error) {
-	data, err := ioutil.ReadFile("./config/config.yaml")
+func readYaml(path string) (config.Config, error) {
+	data, err := ioutil.ReadFile(path)
 	if err != nil {
 		log.Panic(err)
 	}
@@ -20,10 +20,7 @@ func readYaml() (config.Config, error) {
 		log.Panic(err)
 	}
 
-	// just for debug
-	log.Println(obj)
 	suites := obj.Suites
-
 	// 把global中的配置合并到suites中
 	for _, suite := range suites {
 		log.Printf("scene name %s begin working", suite.Name)
@@ -38,6 +35,8 @@ func readYaml() (config.Config, error) {
 		}
 	}
 
+	// just for debug
+	log.Println(obj)
 	return obj, nil
 
 }

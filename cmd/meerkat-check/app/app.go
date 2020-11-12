@@ -28,7 +28,7 @@ func NewCommand() *cobra.Command {
 func runCommand() error {
 	log.Println("meerkat-check is running...")
 
-	config, err := readYaml()
+	config, err := readYaml("./config/config.yaml")
 	ctx, cancel := context.WithCancel(context.Background())
 	defer func() {
 		log.Println("canceling context")
