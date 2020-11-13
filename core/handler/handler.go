@@ -8,7 +8,6 @@ import (
 )
 
 func Handler(ctx context.Context, conf config.Config) error {
-
 	suites := conf.Suites
 	global := conf.Global
 	gReq := global.Request
