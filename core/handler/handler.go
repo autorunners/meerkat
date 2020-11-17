@@ -3,32 +3,82 @@ package handler
 import (
 	"context"
 	"log"
+	"sync"
 
 	"github.com/autorunners/meerkat/core/config"
+	"github.com/autorunners/meerkat/core/output"
 )
 
-func Handler(ctx context.Context, conf config.Config) error {
+func Handler(ctx context.Context, conf config.Config) {
+	log.Println("Handler start===============================")
+	var (
+		wg sync.WaitGroup
+		ch chan map[string]interface{}
+	)
+	ch = make(chan map[string]interface{}, 100)
+	wg.Add(1)
 	suites := conf.Suites
 	global := conf.Global
 	gReq := global.Request
-	for _, suite := range suites {
-		log.Printf("scene name %s begin working", suite.Name)
-		if err := handlerSteps(suite.Steps, gReq); err != nil {
-			return err
-		}
+
+	result := output.Init(global.Name)
+	go result.Receiving(wg, ch)
+
+	startSuites := map[string]interface{}{
+		"key":  "start-suites",
+		"name": global.Name,
 	}
-	return nil
+	ch <- startSuites
+
+	for _, suite := range suites {
+		log.Printf("suite name %s begin working", suite.Name)
+		startSuite := map[string]interface{}{
+			"key":  "start-suite",
+			"name": suite.Name,
+		}
+		ch <- startSuite
+		handlerSteps(suite.Steps, gReq, ch)
+
+		endSuite := map[string]interface{}{
+			"key":  "end-suite",
+			"name": suite.Name,
+		}
+		ch <- endSuite
+	}
+
+	endSuites := map[string]interface{}{
+		"key":  "end-suites",
+		"name": global.Name,
+	}
+	ch <- endSuites
+
+	wg.Wait()
 
 }
 
-func handlerSteps(steps config.Steps, gReq config.Request) error {
+func handlerSteps(steps config.Steps, gReq config.Request, ch chan map[string]interface{}) {
 	for _, step := range steps {
 		log.Println(step)
+		startStep := map[string]interface{}{
+			"key":  "start-step",
+			"name": step.Name,
+		}
+		ch <- startStep
+
+		endStep := map[string]interface{}{
+			"key":  "end-step",
+			"name": step.Name,
+		}
 		if err := handlerStep(step, gReq); err != nil {
-			return err
+			endStep["success"] = false
+			endStep["body"] = err.Error()
+			ch <- endStep
+		} else {
+			endStep["success"] = true
+			endStep["body"] = "success"
+			ch <- endStep
 		}
 	}
-	return nil
 }
 
 func handlerStep(step config.Step, gReq config.Request) error {
