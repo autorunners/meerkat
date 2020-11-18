@@ -2,26 +2,30 @@ package output
 
 type (
 	Result struct {
-		Id           string       `json:"id"`
-		Name         string       `json:"name"`
-		StartTime    int64        `json:"startTime"`
-		EndTime      int64        `json:"endTime"`
-		Time         int64        `json:"time"`
-		Success      bool         `json:"success"`
-		Number       int          `json:"number"`
-		SuiteResults SuiteResults `json:"result"`
+		Id            string       `json:"id"`
+		Name          string       `json:"name"`
+		StartTime     int64        `json:"startTime"`
+		EndTime       int64        `json:"endTime"`
+		Time          int64        `json:"time"`
+		Success       bool         `json:"success"`
+		Number        int          `json:"number"`
+		NumberFail    int          `json:"numberFail"`
+		NumberSuccess int          `json:"numberSuccess"`
+		SuiteResults  SuiteResults `json:"result"`
 	}
 
 	SuiteResults []SuiteResult
 	SuiteResult  struct {
-		Id          string      `json:"id"`
-		Name        string      `json:"name"`
-		StartTime   int64       `json:"startTime"`
-		EndTime     int64       `json:"endTime"`
-		Time        int64       `json:"time"`
-		Success     bool        `json:"success"`
-		Number      int         `json:"number"`
-		StepsResult StepsResult `json:"result"`
+		Id            string      `json:"id"`
+		Name          string      `json:"name"`
+		StartTime     int64       `json:"startTime"`
+		EndTime       int64       `json:"endTime"`
+		Time          int64       `json:"time"`
+		Success       bool        `json:"success"`
+		Number        int         `json:"number"`
+		NumberFail    int         `json:"numberFail"`
+		NumberSuccess int         `json:"numberSuccess"`
+		StepsResult   StepsResult `json:"result"`
 	}
 	StepsResult []StepResult
 	StepResult  struct {

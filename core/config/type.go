@@ -47,45 +47,4 @@ type (
 		Type   string   `yaml:"type"`
 		Values []string `yaml:"value"`
 	}
-
-	Result struct {
-		Id           string       `json:"id"`
-		Name         string       `json:"name"`
-		StartTime    int64        `json:"startTime"`
-		EndTime      int64        `json:"endTime"`
-		Time         uint64       `json:"time"`
-		Success      bool         `json:"success"`
-		Number       uint16       `json:"number"`
-		SuiteResults SuiteResults `json:"result"`
-	}
-
-	SuiteResults []SuiteResult
-	SuiteResult  struct {
-		Id          string      `json:"id"`
-		Name        string      `json:"name"`
-		StartTime   int64       `json:"startTime"`
-		EndTime     int64       `json:"endTime"`
-		Time        uint64      `json:"time"`
-		Success     bool        `json:"success"`
-		Number      uint16      `json:"number"`
-		StepsResult StepsResult `json:"result"`
-	}
-	StepsResult []StepResult
-	StepResult  struct {
-		Id              string          `json:"id"`
-		Name            string          `json:"name"`
-		StartTime       uint64          `json:"startTime"`
-		EndTime         uint64          `json:"endTime"`
-		Time            uint64          `json:"time"`
-		Success         bool            `json:"success"`
-		Body            []byte          `json:"body"`
-		ValidateResults ValidateResults `json:"result"`
-	}
-	ValidateResults []ValidateResult
-	ValidateResult  struct {
-		Id      string `json:"id"`
-		Success bool   `json:"success"`
-		Op      string `json:"op"`
-		Detail  string `json:"detail"`
-	}
 )

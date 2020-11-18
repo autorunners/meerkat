@@ -54,19 +54,23 @@ func handlerSuite(suite config.Suite, gReq config.Request, ch chan output.SuiteR
 		Name:      suite.Name,
 		StartTime: utils.GetTimestampMilli(),
 	}
-	success, number, stepResults := handlerSteps(suite.Steps, gReq)
+	success, number, numberFail, numberSuccess, stepResults := handlerSteps(suite.Steps, gReq)
 	suiteResult.StepsResult = stepResults
 	suiteResult.Success = success
 	suiteResult.Number = number
+	suiteResult.NumberFail = numberFail
+	suiteResult.NumberSuccess = numberSuccess
 	suiteResult.EndTime = utils.GetTimestampMilli()
 	suiteResult.Time = suiteResult.EndTime - suiteResult.StartTime
 
 	ch <- suiteResult
 }
 
-func handlerSteps(steps config.Steps, gReq config.Request) (success bool, number int, stepsResult output.StepsResult) {
+func handlerSteps(steps config.Steps, gReq config.Request) (success bool, number int, numberFail int, numberSuccess int, stepsResult output.StepsResult) {
 	success = true
 	number = 0
+	numberFail = 0
+	numberSuccess = 0
 	stepsResult = output.StepsResult{}
 	for _, step := range steps {
 		log.Println(step)
@@ -82,9 +86,11 @@ func handlerSteps(steps config.Steps, gReq config.Request) (success bool, number
 			stepResult.Success = false
 			stepResult.Body = err.Error()
 			success = false
+			numberFail++
 		} else {
 			stepResult.Success = true
 			stepResult.Body = string(body)
+			numberSuccess++
 			// @todo Validate验证判断success是否为true
 		}
 		stepResult.EndTime = utils.GetTimestampMilli()
