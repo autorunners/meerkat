@@ -6,9 +6,9 @@ type (
 		Name         string       `json:"name"`
 		StartTime    int64        `json:"startTime"`
 		EndTime      int64        `json:"endTime"`
-		Time         uint64       `json:"time"`
+		Time         int64        `json:"time"`
 		Success      bool         `json:"success"`
-		Number       uint16       `json:"number"`
+		Number       int          `json:"number"`
 		SuiteResults SuiteResults `json:"result"`
 	}
 
@@ -18,8 +18,9 @@ type (
 		Name        string      `json:"name"`
 		StartTime   int64       `json:"startTime"`
 		EndTime     int64       `json:"endTime"`
-		Time        uint64      `json:"time"`
+		Time        int64       `json:"time"`
 		Success     bool        `json:"success"`
+		Number      int         `json:"number"`
 		StepsResult StepsResult `json:"result"`
 	}
 	StepsResult []StepResult
@@ -28,7 +29,7 @@ type (
 		Name            string          `json:"name"`
 		StartTime       int64           `json:"startTime"`
 		EndTime         int64           `json:"endTime"`
-		Time            uint64          `json:"time"`
+		Time            int64           `json:"time"`
 		Success         bool            `json:"success"`
 		Body            string          `json:"body"`
 		ValidateResults ValidateResults `json:"result"`

@@ -51,8 +51,8 @@ type (
 	Result struct {
 		Id           string       `json:"id"`
 		Name         string       `json:"name"`
-		StartTime    uint64       `json:"startTime"`
-		EndTime      uint64       `json:"endTime"`
+		StartTime    int64        `json:"startTime"`
+		EndTime      int64        `json:"endTime"`
 		Time         uint64       `json:"time"`
 		Success      bool         `json:"success"`
 		Number       uint16       `json:"number"`
@@ -63,10 +63,11 @@ type (
 	SuiteResult  struct {
 		Id          string      `json:"id"`
 		Name        string      `json:"name"`
-		StartTime   uint64      `json:"startTime"`
-		EndTime     uint64      `json:"endTime"`
+		StartTime   int64       `json:"startTime"`
+		EndTime     int64       `json:"endTime"`
 		Time        uint64      `json:"time"`
 		Success     bool        `json:"success"`
+		Number      uint16      `json:"number"`
 		StepsResult StepsResult `json:"result"`
 	}
 	StepsResult []StepResult

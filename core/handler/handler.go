@@ -32,7 +32,7 @@ func Handler(ctx context.Context, conf config.Config) {
 	for _, suite := range suites {
 		wgSuite.Add(1)
 		log.Printf("suite name %s begin working", suite.Name)
-		//go handlerSuite(suite, gReq, ch)
+		//go handlerSuite(suite, gReq, ch, &wgSuite)
 		handlerSuite(suite, gReq, ch, &wgSuite)
 	}
 
@@ -51,17 +51,23 @@ func handlerSuite(suite config.Suite, gReq config.Request, ch chan output.SuiteR
 		Name:      suite.Name,
 		StartTime: utils.GetTimestampMilli(),
 	}
-	success := handlerSteps(suite.Steps, gReq, &suiteResult)
-	suiteResult.EndTime = utils.GetTimestampMilli()
+	success, number, stepResults := handlerSteps(suite.Steps, gReq)
+	suiteResult.StepsResult = stepResults
 	suiteResult.Success = success
+	suiteResult.Number = number
+	suiteResult.EndTime = utils.GetTimestampMilli()
+	suiteResult.Time = suiteResult.EndTime - suiteResult.StartTime
 
 	ch <- suiteResult
 }
 
-func handlerSteps(steps config.Steps, gReq config.Request, suiteResult *output.SuiteResult) (success bool) {
+func handlerSteps(steps config.Steps, gReq config.Request) (success bool, number int, stepsResult output.StepsResult) {
 	success = true
+	number = 0
+	stepsResult = output.StepsResult{}
 	for _, step := range steps {
 		log.Println(step)
+		number++
 		stepResult := output.StepResult{
 			Id:        utils.GenerateUUID(),
 			Name:      step.Name,
@@ -72,15 +78,16 @@ func handlerSteps(steps config.Steps, gReq config.Request, suiteResult *output.S
 		if err != nil {
 			stepResult.Success = false
 			stepResult.Body = err.Error()
-			stepResult.EndTime = utils.GetTimestampMilli()
 			success = false
 		} else {
 			stepResult.Success = true
 			stepResult.Body = string(body)
-			stepResult.EndTime = utils.GetTimestampMilli()
 			// @todo Validate验证判断success是否为true
 		}
-		suiteResult.StepsResult = append(suiteResult.StepsResult, stepResult)
+		stepResult.EndTime = utils.GetTimestampMilli()
+		stepResult.Time = stepResult.EndTime - stepResult.StartTime
+
+		stepsResult = append(stepsResult, stepResult)
 	}
 	return
 }
