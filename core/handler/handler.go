@@ -4,7 +4,9 @@ import (
 	"context"
 	"io/ioutil"
 	"log"
+	"os"
 	"sync"
+	"syscall"
 	"time"
 
 	"github.com/autorunners/meerkat/core/config"
@@ -12,7 +14,7 @@ import (
 	"github.com/autorunners/meerkat/utils"
 )
 
-func Handler(ctx context.Context, conf config.Config) {
+func Handler(ctx context.Context, conf config.Config, chSignal chan os.Signal) {
 	log.Println("Handler start===============================")
 	var (
 		wg      sync.WaitGroup
@@ -41,7 +43,8 @@ func Handler(ctx context.Context, conf config.Config) {
 	close(ch)
 
 	wg.Wait()
-
+	ctx.Done()
+	chSignal <- syscall.SIGINFO
 }
 
 func handlerSuite(suite config.Suite, gReq config.Request, ch chan output.SuiteResult, wg *sync.WaitGroup) {
