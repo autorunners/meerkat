@@ -12,25 +12,11 @@ type (
 	}
 )
 
-func (jr JsonResult) Receiving(wg sync.WaitGroup, ch <-chan map[string]interface{}) {
-	for datas := range ch {
-		key := datas["key"]
-		switch key {
-		case "start-suites":
-			doStartSuites(datas)
-		case "end-suites":
-			doEndSuites(datas)
-		default:
-			doEndSuites(datas)
-
-		}
+func (jr JsonResult) Receiving(ch <-chan SuiteResult, wg *sync.WaitGroup) {
+	defer func() {
+		wg.Done()
+	}()
+	for data := range ch {
+		log.Println(data)
 	}
-}
-
-func doStartSuites(datas map[string]interface{}) {
-	log.Println(datas)
-}
-
-func doEndSuites(datas map[string]interface{}) {
-	log.Println(datas)
 }

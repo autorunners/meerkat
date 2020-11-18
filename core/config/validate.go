@@ -21,7 +21,6 @@ func (validates Validates) Check(resp *http.Response, t string) error {
 }
 
 func (validates Validates) jsonCheck(resp *http.Response) error {
-	defer resp.Body.Close()
 
 	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {

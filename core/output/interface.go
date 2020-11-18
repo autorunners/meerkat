@@ -6,7 +6,7 @@ import (
 )
 
 type CoreInterface interface {
-	Receiving(wg sync.WaitGroup, ch <-chan map[string]interface{})
+	Receiving(ch <-chan SuiteResult, wg *sync.WaitGroup)
 }
 
 func Init(name string) CoreInterface {

@@ -4,8 +4,8 @@ type (
 	Result struct {
 		Id           string       `json:"id"`
 		Name         string       `json:"name"`
-		StartTime    uint64       `json:"startTime"`
-		EndTime      uint64       `json:"endTime"`
+		StartTime    int64        `json:"startTime"`
+		EndTime      int64        `json:"endTime"`
 		Time         uint64       `json:"time"`
 		Success      bool         `json:"success"`
 		Number       uint16       `json:"number"`
@@ -16,8 +16,8 @@ type (
 	SuiteResult  struct {
 		Id          string      `json:"id"`
 		Name        string      `json:"name"`
-		StartTime   uint64      `json:"startTime"`
-		EndTime     uint64      `json:"endTime"`
+		StartTime   int64       `json:"startTime"`
+		EndTime     int64       `json:"endTime"`
 		Time        uint64      `json:"time"`
 		Success     bool        `json:"success"`
 		StepsResult StepsResult `json:"result"`
@@ -26,11 +26,11 @@ type (
 	StepResult  struct {
 		Id              string          `json:"id"`
 		Name            string          `json:"name"`
-		StartTime       uint64          `json:"startTime"`
-		EndTime         uint64          `json:"endTime"`
+		StartTime       int64           `json:"startTime"`
+		EndTime         int64           `json:"endTime"`
 		Time            uint64          `json:"time"`
 		Success         bool            `json:"success"`
-		Body            []byte          `json:"body"`
+		Body            string          `json:"body"`
 		ValidateResults ValidateResults `json:"result"`
 	}
 	ValidateResults []ValidateResult

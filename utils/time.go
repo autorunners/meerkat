@@ -8,7 +8,7 @@ func GetTimestamp() int64 {
 	return time.Now().UnixNano() / int64(time.Second)
 }
 
-func GetTimestampMs() int64 {
+func GetTimestampMilli() int64 {
 	return time.Now().UnixNano() / int64(time.Millisecond)
 }
 
