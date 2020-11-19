@@ -1,4 +1,4 @@
-package config
+package request
 
 import (
 	"log"
@@ -6,9 +6,23 @@ import (
 	"time"
 )
 
+type (
+	Cookie  map[string]string
+	Headers map[string]string
+	Request struct {
+		Cookies Cookie  `yaml:"cookies"`
+		Headers Headers `yaml:"headers"`
+		Method  string  `yaml:"method"`
+		Uri     string  `yaml:"uri"`
+		Host    string  `yaml:"host"`
+		FullUri string  `yaml:"fullUri"`
+		Timeout int64   `yaml:"timeout"`
+	}
+)
+
 func (req Request) Handle() (*http.Response, error) {
 	log.Println(req)
-	request, err := http.NewRequest(req.Method, req.Host+req.Uri, nil)
+	request, err := http.NewRequest(req.Method, req.FullUri, nil)
 	if err != nil {
 		return nil, err
 	}

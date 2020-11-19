@@ -1,5 +1,9 @@
 package config
 
+import (
+	"github.com/autorunners/meerkat/core/request"
+)
+
 type (
 	Config struct {
 		Global Global `yaml:"global"`
@@ -20,26 +24,15 @@ type (
 	}
 	Steps []Step
 	Step  struct {
-		Name      string    `yaml:"name"`
-		Request   Request   `yaml:"request"`
-		Validates Validates `yaml:"validates"`
-		Response  Response  `yaml:"response"`
+		Name      string          `yaml:"name"`
+		Request   request.Request `yaml:"request"`
+		Validates Validates       `yaml:"validates"`
+		Response  Response        `yaml:"response"`
 	}
 
 	Validates []Validate
 	Validate  struct {
 		Op []string `yaml:"op"`
-	}
-
-	Cookie  map[string]string
-	Headers map[string]string
-	Request struct {
-		Cookies Cookie  `yaml:"cookies"`
-		Headers Headers `yaml:"headers"`
-		Method  string  `yaml:"method"`
-		Uri     string  `yaml:"uri"`
-		Host    string  `yaml:"host"`
-		Timeout int64   `yaml:"timeout"`
 	}
 
 	Response struct {

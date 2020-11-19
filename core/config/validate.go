@@ -8,28 +8,33 @@ import (
 	"net/http"
 )
 
-func (validates Validates) Check(resp *http.Response, t string) error {
-	if t == "" {
-		t = "json"
-	}
+func (validates Validates) Check(resp *http.Response, t string) (error, []byte) {
+	log.Println(t)
+	//if t == "" {
+	//	t = "json"
+	//}
 	switch t {
 	case "json":
-		return validates.jsonCheck(resp)
+		return validates.jsonCheck(resp) // @todo 未来使用单独的类处理，不同的类处理不同的类型
+	default:
+		log.Println("type not support for now")
+		return errors.New("type not support for now"), nil
 	}
-	return errors.New("not json")
 
 }
 
-func (validates Validates) jsonCheck(resp *http.Response) error {
-
+func (validates Validates) jsonCheck(resp *http.Response) (error, []byte) {
 	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return err
+		log.Println(err)
+		return err, nil
 	}
+	log.Println(string(respBody))
 	var mapBody map[string]interface{}
-	err = json.Unmarshal(respBody, mapBody)
+	err = json.Unmarshal(respBody, &mapBody)
 	if err != nil {
-		return err
+		log.Println(err, respBody)
+		return err, nil
 	}
 	for _, validate := range validates {
 		log.Println(validate)
@@ -37,17 +42,17 @@ func (validates Validates) jsonCheck(resp *http.Response) error {
 		log.Println(op)
 		if op[0] == "http" {
 			if err := checkHttpOp(op, resp); err != nil {
-				return err
+				return err, nil
 			}
 		} else if op[0] == "body" {
 			if err := checkBodyOp(op, mapBody); err != nil {
-				return err
+				return err, nil
 			}
 		} else {
-			return errors.New("unknown")
+			return errors.New("unknown"), nil
 		}
 	}
-	return nil
+	return nil, respBody
 }
 
 func checkHttpOp(op []string, resp *http.Response) error {

@@ -2,7 +2,6 @@ package handler
 
 import (
 	"context"
-	"io/ioutil"
 	"log"
 	"os"
 	"sync"
@@ -11,6 +10,7 @@ import (
 
 	"github.com/autorunners/meerkat/core/config"
 	"github.com/autorunners/meerkat/core/output"
+	"github.com/autorunners/meerkat/core/request"
 	"github.com/autorunners/meerkat/utils"
 )
 
@@ -101,7 +101,7 @@ func handlerSteps(steps config.Steps, gReq config.Request) (success bool, number
 	return
 }
 
-func handlerStep(step config.Step, gReq config.Request) (error, []byte) {
+func handlerStep(step config.Step, gReq request.Request) (error, []byte) {
 	req := step.Request
 	name := step.Name
 	log.Printf("[req] %v is begin", name)
@@ -111,29 +111,8 @@ func handlerStep(step config.Step, gReq config.Request) (error, []byte) {
 		return err, nil
 	}
 	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
 	validates := step.Validates
-	validates.Check(resp, step.Response.Type)
+	err, body := validates.Check(resp, step.Response.Type)
+	log.Println(err)
 	return nil, body
-}
-
-// 如果没有相关配置，则使用global中的相关配置
-func mergeGlobal(req config.Request, gReq config.Request) config.Request {
-	if req.Host == "" {
-		req.Host = gReq.Host
-	}
-	if req.Timeout == 0 {
-		req.Timeout = gReq.Timeout
-	}
-	for hk, hv := range gReq.Headers {
-		if req.Headers[hk] == "" {
-			req.Headers[hk] = hv
-		}
-	}
-	for ck, cv := range gReq.Cookies {
-		if req.Cookies[ck] == "" {
-			req.Cookies[ck] = cv
-		}
-	}
-	return req
 }
