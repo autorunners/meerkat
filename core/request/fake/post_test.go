@@ -8,22 +8,22 @@ import (
 	"github.com/autorunners/meerkat/core/request"
 )
 
-func groupGet(gs ...[]testModel) (newGs []testModel) {
+func groupPost(gs ...[]testModel) (newGs []testModel) {
 	for _, g := range gs {
 		newGs = append(newGs, g...)
 	}
 	return newGs
 }
 
-func TestGet(t *testing.T) {
-	tts := groupGet(groupGetNormal(), groupGetHeader())
+func TestPost(t *testing.T) {
+	tts := groupPost(groupPostNormal())
 	for _, tt := range tts {
 		t.Run(tt.name, func(t *testing.T) {
 			handler := http.HandlerFunc(tt.h)
 			server := httptest.NewServer(handler)
 
 			req := request.Request{
-				Method:  "GET",
+				Method:  "POST",
 				Timeout: 50,
 			}
 			req.FullUri = server.URL

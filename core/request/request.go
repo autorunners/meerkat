@@ -3,6 +3,7 @@ package request
 import (
 	"log"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -17,12 +18,13 @@ type (
 		Host    string  `yaml:"host"`
 		FullUri string  `yaml:"fullUri"`
 		Timeout int64   `yaml:"timeout"`
+		Body    string  `yaml:"body"`
 	}
 )
 
 func (req Request) Handle() (*http.Response, error) {
 	log.Println(req)
-	request, err := http.NewRequest(req.Method, req.FullUri, nil)
+	request, err := http.NewRequest(req.Method, req.FullUri, strings.NewReader(req.Body))
 	if err != nil {
 		return nil, err
 	}
