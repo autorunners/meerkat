@@ -35,6 +35,9 @@ type (
 		EndTime         int64           `json:"endTime"`
 		Time            int64           `json:"time"`
 		Success         bool            `json:"success"`
+		Number          int             `json:"number"`
+		NumberFail      int             `json:"numberFail"`
+		NumberSuccess   int             `json:"numberSuccess"`
 		Body            string          `json:"body"`
 		ValidateResults ValidateResults `json:"result"`
 	}

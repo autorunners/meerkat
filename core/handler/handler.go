@@ -81,38 +81,39 @@ func handlerSteps(steps config.Steps, gReq request.Request) (success bool, numbe
 			StartTime: utils.GetTimestampMilli(),
 		}
 
-		err, body := handlerStep(step, gReq)
-		if err != nil {
-			stepResult.Success = false
-			stepResult.Body = err.Error()
-			success = false
-			numberFail++
-		} else {
+		body, numFail, numSuccess, results := handlerStep(step, gReq)
+		if numberFail == 0 {
 			stepResult.Success = true
-			stepResult.Body = string(body)
-			numberSuccess++
-			// @todo Validate验证判断success是否为true
 		}
+		stepResult.Body = body
+		stepResult.Number = numSuccess + numFail
+		stepResult.NumberSuccess = numSuccess
+		stepResult.NumberFail = numFail
 		stepResult.EndTime = utils.GetTimestampMilli()
 		stepResult.Time = stepResult.EndTime - stepResult.StartTime
+		stepResult.ValidateResults = results
 
 		stepsResult = append(stepsResult, stepResult)
+
+		numberFail = numberFail + numFail
+		numberSuccess = numberSuccess + numSuccess
 	}
 	return
 }
 
-func handlerStep(step config.Step, gReq request.Request) (error, []byte) {
+func handlerStep(step config.Step, gReq request.Request) (body string, numberFail int, numberSuccess int, results output.ValidateResults) {
 	req := step.Request
 	name := step.Name
 	log.Printf("[req] %v is begin", name)
 	newReq := mergeGlobal(req, gReq)
 	resp, err := newReq.Handle()
 	if err != nil {
-		return err, nil
+		numberFail++
+		return
 	}
 	defer resp.Body.Close()
 	validates := step.Validates
-	err, body := validates.Check(resp, step.Response.Type)
-	log.Println(err)
-	return nil, body
+	body, numberFail, numberSuccess, results = validates.Check(resp)
+	log.Println(body, numberFail, numberSuccess)
+	return
 }
