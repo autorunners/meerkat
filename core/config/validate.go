@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/autorunners/meerkat/core/output"
@@ -58,11 +59,11 @@ func checkOp(ops []string, respBody []byte, resp *http.Response) error {
 				log.Println(err)
 				return err
 			}
+			if err := checkBodyJsonOp(ops, mapBody); err != nil {
+				return err
+			}
 		} else {
 			return errors.New("body type not eq json")
-		}
-		if err := checkBodyOp(ops, mapBody); err != nil {
-			return err
 		}
 	} else {
 		return errors.New("invalid OP type")
@@ -74,7 +75,7 @@ func checkHttpOp(ops []string, resp *http.Response) error {
 	log.Println(ops[1], ops[2], ops[3], resp.StatusCode)
 	if ops[1] == "eq" {
 		if ops[2] == "status_code" {
-			if resp.Status == ops[3] {
+			if strconv.Itoa(resp.StatusCode) == ops[3] {
 				return nil
 			} else {
 				return errors.New("status not eq")
@@ -83,7 +84,10 @@ func checkHttpOp(ops []string, resp *http.Response) error {
 	}
 	return errors.New("invalid eq")
 }
-func checkBodyOp(ops []string, mapBody map[string]interface{}) error {
+
+// @todo  真实检测body内容
+func checkBodyJsonOp(ops []string, mapBody map[string]interface{}) error {
 	log.Println("body:", ops, mapBody)
+	// 感觉这块要用一个专门的语法来做？需思考
 	return nil
 }
