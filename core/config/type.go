@@ -11,10 +11,10 @@ type (
 	}
 
 	Global struct {
-		Name      string    `yaml:"name"`
-		Verify    bool      `yaml:"verify"`
-		Request   Request   `yaml:"request"`
-		Validates Validates `yaml:"validates"`
+		Name      string          `yaml:"name"`
+		Verify    bool            `yaml:"verify"`
+		Request   request.Request `yaml:"request"`
+		Validates Validates       `yaml:"validates"`
 	}
 
 	Suites []Suite

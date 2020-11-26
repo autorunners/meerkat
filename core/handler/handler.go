@@ -47,7 +47,7 @@ func Handler(ctx context.Context, conf config.Config, chSignal chan os.Signal) {
 	chSignal <- syscall.SIGINFO
 }
 
-func handlerSuite(suite config.Suite, gReq config.Request, ch chan output.SuiteResult, wg *sync.WaitGroup) {
+func handlerSuite(suite config.Suite, gReq request.Request, ch chan output.SuiteResult, wg *sync.WaitGroup) {
 	defer wg.Done()
 	suiteResult := output.SuiteResult{
 		Id:        utils.GenerateUUID(),
@@ -66,7 +66,7 @@ func handlerSuite(suite config.Suite, gReq config.Request, ch chan output.SuiteR
 	ch <- suiteResult
 }
 
-func handlerSteps(steps config.Steps, gReq config.Request) (success bool, number int, numberFail int, numberSuccess int, stepsResult output.StepsResult) {
+func handlerSteps(steps config.Steps, gReq request.Request) (success bool, number int, numberFail int, numberSuccess int, stepsResult output.StepsResult) {
 	success = true
 	number = 0
 	numberFail = 0
