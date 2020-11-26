@@ -30,6 +30,7 @@ func (validates Validates) Check(resp *http.Response) (body string, numberFail i
 		ops := validate.Op
 		log.Println(ops)
 		if err := checkOp(ops, respBody, resp); err != nil {
+			log.Println(err)
 			numberFail++
 			result.Success = false
 			result.Detail = err.Error()

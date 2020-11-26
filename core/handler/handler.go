@@ -74,7 +74,6 @@ func handlerSteps(steps config.Steps, gReq request.Request) (success bool, numbe
 	stepsResult = output.StepsResult{}
 	for _, step := range steps {
 		log.Println(step)
-		number++
 		stepResult := output.StepResult{
 			Id:        utils.GenerateUUID(),
 			Name:      step.Name,
@@ -96,6 +95,7 @@ func handlerSteps(steps config.Steps, gReq request.Request) (success bool, numbe
 		stepsResult = append(stepsResult, stepResult)
 
 		numberFail = numberFail + numFail
+		number = number + numSuccess + numFail
 		numberSuccess = numberSuccess + numSuccess
 	}
 	return
@@ -114,6 +114,6 @@ func handlerStep(step config.Step, gReq request.Request) (body string, numberFai
 	defer resp.Body.Close()
 	validates := step.Validates
 	body, numberFail, numberSuccess, results = validates.Check(resp)
-	log.Println(body, numberFail, numberSuccess)
+	log.Println(body, numberFail, numberSuccess, results)
 	return
 }
