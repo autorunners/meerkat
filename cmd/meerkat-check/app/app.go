@@ -1,9 +1,14 @@
 package app
 
 import (
-	"fmt"
+	"context"
 	"github.com/spf13/cobra"
 	"log"
+	"os"
+	"os/signal"
+	"syscall"
+
+	"github.com/autorunners/meerkat/core/handler"
 )
 
 func NewCommand() *cobra.Command {
@@ -21,6 +26,20 @@ func NewCommand() *cobra.Command {
 }
 
 func runCommand() error {
-	fmt.Println("meerkat-check is running...")
-	return nil
+	log.Println("meerkat-check is running...")
+
+	config, err := readYaml("./config/config.yaml")
+	ctx, cancel := context.WithCancel(context.Background())
+	defer func() {
+		log.Println("canceling context")
+		cancel()
+	}()
+
+	ch := make(chan os.Signal, 1)
+	signal.Notify(ch, os.Interrupt, syscall.SIGTERM, syscall.SIGINFO)
+	go handler.Handler(ctx, config, ch)
+	<-ch
+	log.Println("Received termination, signaling shutdown")
+
+	return err
 }

@@ -1,0 +1,132 @@
+global:
+  name: demo testing
+  verify: false
+  request:
+    host: http://127.0.0.1:8080
+    cookies:
+      cookieG: 'Global Cookie'
+    headers:
+      accept: '*/*'
+      accept-encoding: gzip, deflate, br
+      accept-language: zh-cn
+      user-agent: 'MeerKat v0.01
+                       Darwin/19.6.0'
+      header1: meerkat
+      header2: 'meerkat2'
+    method: GET
+    timeout: 50   # 单位:ms
+  validates:
+    - op:
+      - http    # http: http协议
+      - eq
+      - status_code
+      - 200
+
+suites:
+- name: scene1
+  steps:
+  - name: step-get-json
+    request:
+      cookies:
+        cookie1: '你好'
+        cookie2: hello
+      headers:
+        accept: '*/*'
+        accept-encoding: gzip, deflate, br
+        accept-language: zh-cn
+        user-agent: 'MeerKat v0.01
+              Darwin/19.6.0'
+        header1: meerkat
+        header2: 'meerkat2'
+      method: GET
+      uri: /json
+    validates:
+      - op:
+        - http    # http: http协议
+        - eq
+        - status_code
+        - 200
+    response:
+      name: response
+      type: json
+      values:
+        - key1
+        - key2.key21
+  - name: step-get-normal
+    request:
+      cookies:
+        cookie1: '你好'
+        cookie2: hello
+      headers:
+        accept: '*/*'
+      method: GET
+      params:
+        ts: '0'
+      uri: /normal
+    validates:
+      - op:
+        - http    # http: http协议
+        - eq
+        - status_code
+        - 200
+
+  - name: step-get-normal-string
+    request:
+      cookies:
+        cookie1: '你好'
+        cookie2: hello
+      headers:
+        accept: '*/*'
+        accept-encoding: gzip, deflate, br
+        accept-language: zh-cn
+        user-agent: 'MeerKat v0.01
+                    Darwin/19.6.0'
+        header1: meerkat
+        header2: 'meerkat2'
+      method: GET
+      params:
+        ts: '0'
+      uri: /normal/string
+    validates:
+      - op:
+        - http    # http: http协议
+        - eq
+        - status_code
+        - 200
+
+- name: scene2
+  steps:
+    - name: step-get-json
+      request:
+        cookies:
+          cookie1: '你好'
+          cookie2: hello
+        headers:
+          accept: '*/*'
+          accept-encoding: gzip, deflate, br
+          accept-language: zh-cn
+          user-agent: 'MeerKat v0.01
+              Darwin/19.6.0'
+          header1: meerkat
+          header2: 'meerkat2'
+        method: GET
+        uri: /json
+      validates:
+        - op:
+          - http    # http: http协议
+          - eq
+          - status_code
+          - 200
+        - op:
+          - body   # body: 消息体内容
+          - json
+          - eq
+          - status_code
+          - 200
+      response:
+        name: response
+        type: json
+        values:
+          - key1
+          - key2.key21
+
