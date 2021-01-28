@@ -44,7 +44,7 @@ func Handler(ctx context.Context, conf config.Config, chSignal chan os.Signal) {
 
 	wg.Wait()
 	ctx.Done()
-	chSignal <- syscall.SIGINFO
+	chSignal <- syscall.SIGINT
 }
 
 func handlerSuite(suite config.Suite, gReq request.Request, ch chan output.SuiteResult, wg *sync.WaitGroup) {

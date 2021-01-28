@@ -36,7 +36,7 @@ func runCommand() error {
 	}()
 
 	ch := make(chan os.Signal, 1)
-	signal.Notify(ch, os.Interrupt, syscall.SIGTERM, syscall.SIGINFO)
+	signal.Notify(ch, os.Interrupt, syscall.SIGTERM, syscall.SIGINT)
 	go handler.Handler(ctx, config, ch)
 	<-ch
 	log.Println("Received termination, signaling shutdown")
